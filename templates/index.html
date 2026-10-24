@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0b1020">
-
     <title>PhishShift | Message Risk Scanner</title>
 
     <link
@@ -16,6 +15,123 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
+    <style>
+        /* Full-width recent scans */
+        .full-width-history {
+            width: 100%;
+            max-width: none;
+            margin-top: 32px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .history-description {
+            color: #8faed5;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .full-width-history .history-row {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+            min-width: 0;
+            padding: 20px;
+            border: 1px solid #283953;
+            border-radius: 16px;
+            background: rgba(24, 38, 61, 0.65);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .full-width-history .history-row:hover {
+            border-color: #38bdf8;
+            transform: translateY(-3px);
+        }
+
+        .full-width-history .history-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .full-width-history .history-message p {
+            margin: 0;
+            color: #e3edff;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .full-width-history .history-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding-top: 14px;
+            border-top: 1px solid #283953;
+        }
+
+        .full-width-history .history-meta small {
+            color: #8faed5;
+        }
+
+        .full-width-history .history-badge {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .full-width-history .history-badge.risk-high {
+            color: #ff8585;
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .full-width-history .history-badge.risk-medium {
+            color: #ffd15c;
+            background: rgba(245, 158, 11, 0.12);
+        }
+
+        .full-width-history .history-badge.risk-low {
+            color: #5ee6a0;
+            background: rgba(34, 197, 94, 0.12);
+        }
+
+        .full-width-history .empty-history {
+            margin-top: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px dashed #344761;
+            border-radius: 14px;
+            color: #9db3d2;
+        }
+
+        @media (max-width: 1000px) {
+            .history-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .full-width-history {
+                padding: 20px;
+            }
+
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -34,6 +150,8 @@
 </nav>
 
 <main class="container main-container">
+
+    <!-- HERO SECTION -->
     <section class="hero-section">
         <div class="hero-tag">
             <span class="hero-tag-dot"></span>
@@ -51,9 +169,13 @@
         </p>
     </section>
 
+    <!-- MAIN TWO-COLUMN SECTION -->
     <div class="row g-4 align-items-start">
+
+        <!-- MESSAGE SCANNER -->
         <div class="col-lg-7">
             <section class="panel scanner-panel">
+
                 <div class="section-heading">
                     <div class="heading-icon">⌕</div>
                     <div>
@@ -67,7 +189,9 @@
                         <label for="message" class="form-label">
                             Message content
                         </label>
-                        <span class="input-hint">MAX 5,000 CHARACTERS</span>
+                        <span class="input-hint">
+                            MAX 5,000 CHARACTERS
+                        </span>
                     </div>
 
                     <textarea
@@ -108,8 +232,10 @@
                     </div>
                 </form>
 
+                <!-- SCAN RESULT -->
                 {% if result %}
                 <div class="result-card mt-4">
+
                     <div class="result-top">
                         <div>
                             <span class="eyebrow">SCAN COMPLETE</span>
@@ -140,7 +266,9 @@
                             {% else %}
                                 score-low
                             {% endif %}">
-                            <div class="score-number">{{ result.score }}</div>
+                            <div class="score-number">
+                                {{ result.score }}
+                            </div>
                             <div class="score-out-of">OUT OF 100</div>
                         </div>
 
@@ -211,19 +339,19 @@
                         <h3>Warning signs</h3>
 
                         {% if result.reasons %}
-                            <ul class="reason-list">
-                                {% for reason in result.reasons %}
-                                    <li>
-                                        <span class="reason-icon">!</span>
-                                        <span>{{ reason }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                        <ul class="reason-list">
+                            {% for reason in result.reasons %}
+                            <li>
+                                <span class="reason-icon">!</span>
+                                <span>{{ reason }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
                         {% else %}
-                            <div class="no-reasons">
-                                No configured warning signs were identified.
-                                Continue to use caution.
-                            </div>
+                        <div class="no-reasons">
+                            No configured warning signs were identified.
+                            Continue to use caution.
+                        </div>
                         {% endif %}
                     </div>
 
@@ -233,13 +361,17 @@
                         Verify suspicious requests using the official website
                         or contact details you already trust.
                     </div>
+
                 </div>
                 {% endif %}
+
             </section>
         </div>
 
+        <!-- HOW IT WORKS -->
         <div class="col-lg-5">
             <section class="panel guide-panel">
+
                 <div class="section-heading">
                     <div class="heading-icon">✳</div>
                     <div>
@@ -260,8 +392,10 @@
                     <div class="step-number">02</div>
                     <div>
                         <h3>Analyze warning signs</h3>
-                        <p>The scanner checks configured phrases, links,
-                           and other indicators.</p>
+                        <p>
+                            The scanner checks configured phrases, links,
+                            and other indicators.
+                        </p>
                     </div>
                 </div>
 
@@ -269,7 +403,9 @@
                     <div class="step-number">03</div>
                     <div>
                         <h3>Review the result</h3>
-                        <p>Read the risk score and the reasons behind it.</p>
+                        <p>
+                            Read the risk score and the reasons behind it.
+                        </p>
                     </div>
                 </div>
 
@@ -277,69 +413,89 @@
                     <div class="tip-icon">盾</div>
                     <div>
                         <strong>Stay one step ahead</strong>
-                        <p>Never share an OTP or password in response to
-                           an unexpected message.</p>
+                        <p>
+                            Never share an OTP or password in response to
+                            an unexpected message.
+                        </p>
                     </div>
                 </div>
-            </section>
 
-            <section class="panel history-panel">
-                <div class="history-heading">
-                    <div>
-                        <span class="eyebrow">YOUR ACTIVITY</span>
-                        <h2>Recent scans</h2>
-                    </div>
-                    <span class="history-count">
-                        {% if history %}{{ history|length }}{% else %}0{% endif %}
-                    </span>
-                </div>
-
-                {% if history %}
-                    {% for item in history %}
-                    <div class="history-row">
-                        <div class="history-message">
-                            <span class="history-dot
-                                {% if item.score >= 65 %}
-                                    dot-high
-                                {% elif item.score >= 35 %}
-                                    dot-medium
-                                {% else %}
-                                    dot-low
-                                {% endif %}"></span>
-                            <p>{{ item.message_preview }}</p>
-                        </div>
-
-                        <div class="history-meta">
-                            <small>{{ item.scanned_at }}</small>
-                            <span class="history-badge
-                                {% if item.score >= 65 %}
-                                    risk-high
-                                {% elif item.score >= 35 %}
-                                    risk-medium
-                                {% else %}
-                                    risk-low
-                                {% endif %}">
-                                {{ item.risk }} · {{ item.score }}/100
-                            </span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="empty-history">
-                        <div class="empty-history-icon">◷</div>
-                        <strong>No scans yet</strong>
-                        <p>Your recent scan activity will appear here.</p>
-                    </div>
-                {% endif %}
             </section>
         </div>
     </div>
 
+    <!-- FULL-WIDTH RECENT SCANS -->
+    <section class="panel history-panel full-width-history">
+
+        <div class="history-heading">
+            <div>
+                <span class="eyebrow">YOUR ACTIVITY</span>
+                <h2>Recent scans</h2>
+                <p class="history-description">
+                    Review your previously analyzed messages and their risk levels.
+                </p>
+            </div>
+
+            <span class="history-count">
+                {% if history %}{{ history|length }}{% else %}0{% endif %}
+            </span>
+        </div>
+
+        {% if history %}
+        <div class="history-grid">
+            {% for item in history %}
+            <article class="history-row">
+
+                <div class="history-message">
+                    <span class="history-dot
+                        {% if item.score >= 65 %}
+                            dot-high
+                        {% elif item.score >= 35 %}
+                            dot-medium
+                        {% else %}
+                            dot-low
+                        {% endif %}">
+                    </span>
+
+                    <p>{{ item.message_preview }}</p>
+                </div>
+
+                <div class="history-meta">
+                    <small>{{ item.scanned_at }}</small>
+
+                    <span class="history-badge
+                        {% if item.score >= 65 %}
+                            risk-high
+                        {% elif item.score >= 35 %}
+                            risk-medium
+                        {% else %}
+                            risk-low
+                        {% endif %}">
+                        {{ item.risk }} · {{ item.score }}/100
+                    </span>
+                </div>
+
+            </article>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="empty-history">
+            <div class="empty-history-icon">◷</div>
+            <strong>No scans yet</strong>
+            <p>Your recent scan activity will appear here.</p>
+        </div>
+        {% endif %}
+
+    </section>
+
+    <!-- FOOTER -->
     <footer class="app-footer">
         <div class="footer-brand">Phish<span>Shift</span></div>
         <p>Message Risk Scanner · Student Mini Project</p>
         <small>Use caution with every unexpected message.</small>
     </footer>
+
 </main>
 
 <script>
@@ -348,6 +504,7 @@ function loadSample() {
         "URGENT! Your bank account is blocked. " +
         "Verify your password immediately at " +
         "http://secure-check.example/login";
+
     document.getElementById("message").focus();
 }
 
@@ -356,5 +513,6 @@ function clearMessage() {
     document.getElementById("message").focus();
 }
 </script>
+
 </body>
 </html>
