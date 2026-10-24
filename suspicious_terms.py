@@ -1,0 +1,81 @@
+
+SUSPICIOUS_TERMS = [
+    # Urgency and threats
+    "urgent",
+    "immediate action",
+    "act now",
+    "final warning",
+    "last chance",
+    "expires today",
+    "account suspended",
+    "account blocked",
+    "account locked",
+    "account will be deleted",
+    "access will be revoked",
+    "within 24 hours",
+
+    # Login and verification
+    "verify your account",
+    "verify your identity",
+    "confirm your identity",
+    "confirm your password",
+    "reset your password",
+    "login credentials",
+    "sign in immediately",
+    "unusual login",
+    "suspicious login",
+    "security alert",
+    "account verification",
+    "unauthorized access",
+
+    # Personal and financial information
+    "send your otp",
+    "share your otp",
+    "verification code",
+    "pin number",
+    "card details",
+    "credit card number",
+    "bank account details",
+    "online banking",
+    "update your billing",
+    "payment information",
+    "wallet recovery phrase",
+    "personal information",
+    "sensitive information",
+
+    # Prizes and rewards
+    "you have won",
+    "claim your prize",
+    "free reward",
+    "cash prize",
+    "lottery winner",
+    "exclusive offer",
+    "claim your bonus",
+    "gift card",
+    "free smartphone",
+    "congratulations winner",
+
+    # Payments and delivery
+    "payment failed",
+    "payment overdue",
+    "pay immediately",
+    "outstanding balance",
+    "refund available",
+    "claim your refund",
+    "delivery failed",
+    "package on hold",
+    "pay a small fee",
+    "release your parcel",
+
+    # Links and attachments
+    "click here",
+    "click the link",
+    "open this link",
+    "download attachment",
+    "enable macros",
+    "visit this website",
+    "update your details",
+    "confirm your details",
+    "secure your account",
+    "avoid account closure"
+]
